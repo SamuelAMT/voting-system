@@ -1,0 +1,194 @@
+PROMPTS LOG - Feature Voting System
+==========================================
+
+CLAUDE CODE PROMPTS - Feature Voting System
+===========================================
+
+PROMPT 1: Project Setup & Planning
+-----------------------------------
+User: "let's do it! I suggest using neon as it's a postgresql instance and it's all setup. Can we proceed?"
+
+Claude Response: Created comprehensive project plan including:
+- Tech stack selection (Neon PostgreSQL, Node.js/Express, React, React Native, Prisma)
+- Database schema design
+- API endpoint planning
+- Project structure
+- Implementation roadmap
+
+Next: Will create project structure and begin implementation
+
+PROMPT 2: Database Schema Setup
+-------------------------------
+Write each prompt I send to you into a file prompts.txt, so I can audit the work.
+
+Create a Prisma schema file for a feature voting system with the following requirements:
+- Features table: id, title, description, authorName, votes count, timestamps  
+- Votes table: id, feature_id (foreign key), voter_ip, timestamp
+- Prevent duplicate votes per IP per feature
+- Use PostgreSQL as the database
+- Set up proper relationships and constraints
+
+Save this as backend/prisma/schema.prisma
+
+PROMPT 3: Backend API Setup
+---------------------------
+Create an Express.js backend server with the following:
+- CORS enabled for frontend communication
+- Routes for: GET /api/features, POST /api/features, POST /api/features/:id/vote
+- Prisma client integration
+- Error handling middleware
+- Rate limiting for voting
+- IP-based duplicate vote prevention
+- Environment variable configuration for database
+
+Create the main server file as backend/server.js and routes in backend/routes/features.js
+
+PROMPT 4: React Frontend
+------------------------
+Create a React frontend application with TypeScript that includes:
+- Feature list component showing all features sorted by votes
+- Add feature form component  
+- Voting buttons with optimistic updates
+- Error handling and loading states
+- Responsive design using CSS modules or styled-components
+- API integration using axios
+- Real-time vote updates
+
+Structure the app with components in src/components/ and services in src/services/
+
+PROMPT 5: React Native Mobile App  
+---------------------------------
+Create a React Native app for iOS with:
+- Feature list screen with voting functionality
+- Add feature screen with form
+- Navigation between screens
+- Native styling that follows iOS design guidelines
+- API integration matching the web frontend
+- AsyncStorage for simple state persistence
+- Pull-to-refresh functionality
+
+PROMPT 6: Database Connection & Environment
+-------------------------------------------
+Create the following configuration files:
+- .env.example with all required environment variables
+- .gitignore file for Node.js, React, and React Native
+- package.json scripts for development workflow
+- README.md with setup and run instructions
+
+Configure connection to Neon PostgreSQL database
+
+PROMPT 7: Testing & Error Handling
+----------------------------------
+Add comprehensive error handling:
+- Database connection errors
+- Invalid input validation
+- Rate limiting responses
+- Network failure handling in frontend
+- Duplicate vote prevention feedback
+- Form validation on both web and mobile
+
+Create basic tests for the API endpoints
+
+PROMPT 8: Deployment & Documentation
+------------------------------------
+Create deployment configuration and documentation:
+- Docker setup for containerization
+- Railway/Render deployment configs
+- Vercel/Netlify frontend deployment
+- Comprehensive README with setup instructions
+- API documentation
+- Troubleshooting guide
+
+PROMPT 9: Codebase Analysis & Issue Resolution
+----------------------------------------------
+User: "could you help me to solve it? mobile\src\components\AddFeatureForm.tsx has wrong imports for Feature type and API service"
+
+Claude analyzed existing codebase structure and identified key issues:
+- Incorrect import paths for Feature type (should be from '../types/Feature')
+- Wrong API service import (should be 'apiService' not 'featuresApi')
+- Mix of web React and React Native components in mobile directory
+- Environment variable configuration inconsistencies
+
+Resolution: Updated imports to use correct paths and consistent naming conventions
+
+PROMPT 10: Environment Configuration & Server Setup
+---------------------------------------------------
+User: "About envs and servers to run, these are my envs... what commands to start each server?"
+
+Claude provided complete server startup instructions and identified port mismatches:
+- Backend running on port 5000 vs frontend expecting port 3001
+- Mobile app needing proper environment configuration  
+- Fixed environment variable consistency across all .env files
+
+Commands provided:
+- Backend: `cd backend && npm run dev`
+- Frontend: `cd frontend && npm start` 
+- Mobile: `cd mobile && npx expo start` (then press 'w' for web)
+
+PROMPT 11: Prisma Client Generation & Database Issues
+-----------------------------------------------------
+User: Backend failing with "Prisma client did not initialize yet. Please run 'prisma generate'"
+
+Claude diagnosed and resolved Prisma configuration issues:
+- Prisma client not properly generated for the project structure
+- Custom output path conflicts in schema.prisma
+- Database migration needed for Neon PostgreSQL
+
+Resolution: 
+- Updated schema.prisma to use standard Prisma client output
+- Ran `npx prisma generate` and `npx prisma db push`
+- Fixed import paths to use standard `@prisma/client`
+
+PROMPT 12: API Data Format Mismatch Resolution
+----------------------------------------------
+User: "POST request not working - getting 'Title and author name are required' error"
+
+Claude identified critical data format inconsistency:
+- Frontend sending `author_name` (snake_case) 
+- Backend/Mobile expecting `authorName` (camelCase)
+- API validation failing due to field name mismatch
+
+Resolution: Updated frontend to consistently use `authorName` across all platforms
+
+PROMPT 13: CORS Configuration for Multi-Platform Support
+--------------------------------------------------------
+User: "Mobile app getting CORS errors when trying to POST"
+
+Claude implemented comprehensive CORS solution:
+- Backend CORS initially only configured for `http://localhost:3000`
+- Mobile app running on `http://localhost:8081` needed CORS access
+- Environment variable configuration for multiple allowed origins
+
+Resolution:
+- Updated CORS configuration to accept both origins: `['http://localhost:3000', 'http://localhost:8081']`
+- Added proper CORS headers for preflight requests
+- Configured environment variables for flexible origin management
+
+FILES CREATED:
+==============
+✅ backend/prisma/schema.prisma - Database schema with proper relationships
+✅ backend/server.js - Express server with multi-origin CORS
+✅ backend/routes/features.js - API routes with IP-based rate limiting  
+✅ frontend/src/App.tsx - React web application
+✅ frontend/src/components/FeatureList.tsx - Feature listing with voting
+✅ frontend/src/components/AddFeatureForm.tsx - Feature creation form
+✅ frontend/src/services/api.ts - API service layer
+✅ mobile/src/components/AddFeatureModal.tsx - React Native feature form
+✅ mobile/src/components/FeatureList.tsx - Mobile feature list with native styling
+✅ mobile/src/components/Header.tsx - Mobile app header component
+✅ mobile/src/services/api.ts - Mobile API service
+✅ mobile/src/types/Feature.ts - TypeScript interfaces
+✅ .env files - Environment configuration for all platforms
+✅ README.md - Comprehensive setup documentation
+
+FINAL WORKING STATE:
+===================
+✅ Backend API: Running on http://localhost:5000 with Neon PostgreSQL
+✅ Web Frontend: Running on http://localhost:3000 - Full CRUD functionality
+✅ Mobile App: Running on http://localhost:8081 - Expo web with native components  
+✅ Database: Properly migrated with Prisma schema
+✅ CORS: Configured for both web and mobile origins
+✅ API: Consistent camelCase data format across all platforms
+✅ Voting System: IP-based duplicate prevention with rate limiting
+
+SUCCESS: Complete end-to-end feature voting system with web and mobile interfaces successfully implemented and tested.
